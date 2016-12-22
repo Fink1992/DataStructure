@@ -7,7 +7,7 @@ typedef struct node {
 	struct node *right;
 } node;
 
-void infix(node *head);
+int leafnumber(node *head);
 
 int main(void)
 {
@@ -27,7 +27,8 @@ int main(void)
 	array[0]->right = array[2];
 	array[0]->left = array[1];
 
-	infix(head);
+	if (!leafnumber(head))
+			printf("empty tree\n");
 
 	for (i = 0; i < 3; i++) {
 		free(array[i]);
@@ -35,13 +36,15 @@ int main(void)
 	return 0;
 }
 
-void infix(node *head)
+int leafnumber(node *head)
 {
-	static int step = 0;
+	static int number = 0;
+	int i, j;
 	if (head == NULL)
-		return ;
-		infix(head->left);
-	printf("number:%d, data:%d\n",++step, head->data);
-	if (head->right != NULL)
-		infix(head->right);
+		return 0;
+	i = leafnumber(head->left);
+	j = leafnumber(head->right);
+	if (!i && !j)
+		printf("This is leaf:%d , sum = %d\n", head->data, ++number);	
+	return 1;
 }
